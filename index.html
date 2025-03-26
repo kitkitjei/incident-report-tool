@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事故報告生成工具</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { padding: 10px 20px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #report { margin-top: 20px; padding: 15px; border: 1px solid #ccc; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>事故報告生成工具</h1>
+    <div class="form-group">
+        <label>日期/時序 (1)</label>
+        <input type="text" id="date" placeholder="例如：2025年3月22日 14:30">
+    </div>
+    <div class="form-group">
+        <label>持續時間 (2) / 約 (3) 小時</label>
+        <input type="text" id="duration" placeholder="例如：2">
+        <input type="text" id="approxDuration" placeholder="例如：3">
+    </div>
+    <div class="form-group">
+        <label>受影響系統 (4)</label>
+        <input type="text" id="system" placeholder="例如：電子醫療系統">
+    </div>
+    <div class="form-group">
+        <label>已知受影響範圍 (5)</label>
+        <input type="text" id="scope" placeholder="例如：急症室">
+    </div>
+    <div class="form-group">
+        <label>現時情況</label>
+        <select id="status">
+            <option value="已還原">已還原 (6)</option>
+            <option value="仍在跟進中">仍在跟進中</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>有沒有受傷</label>
+        <select id="injury" onchange="toggleInjuryDetail()">
+            <option value="沒有">沒有</option>
+            <option value="有">有</option>
+        </select>
+        <textarea id="injuryDetail" placeholder="簡述受傷情況" style="display: none;"></textarea>
+    </div>
+    <div class="form-group">
+        <label>有沒有影響醫院整體運作</label>
+        <select id="operation" onchange="toggleOperationDetail()">
+            <option value="沒有">沒有</option>
+            <option value="有">有</option>
+        </select>
+        <textarea id="operationDetail" placeholder="簡述影響情況" style="display: none;"></textarea>
+    </div>
+    <button onclick="generateReport()">生成報告</button>
+    <div id="report"></div>
+
+    <script>
+        function toggleInjuryDetail() {
+            const injury = document.getElementById("injury").value;
+            document.getElementById("injuryDetail").style.display = injury === "有" ? "block" : "none";
+        }
+
+        function toggleOperationDetail() {
+            const operation = document.getElementById("operation").value;
+            document.getElementById("operationDetail").style.display = operation === "有" ? "block" : "none";
+        }
+
+        function generateReport() {
+            const date = document.getElementById("date").value || "未填寫";
+            const duration = document.getElementById("duration").value || "未填寫";
+            const approxDuration = document.getElementById("approxDuration").value || "未填寫";
+            const system = document.getElementById("system").value || "未填寫";
+            const scope = document.getElementById("scope").value || "未填寫";
+            const status = document.getElementById("status").value;
+            const injury = document.getElementById("injury").value;
+            const injuryDetail = document.getElementById("injuryDetail").value || "無";
+            const operation = document.getElementById("operation").value;
+            const operationDetail = document.getElementById("operationDetail").value || "無";
+
+            const report = `
+事故報告
+
+日期/時序：${date} (1) / 約 ${approxDuration} (3) 小時
+持續時間：${duration} (2)
+受影響系統：${system} (4)
+已知受影響範圍：${scope} (5)
+現時情況：${status === "已還原" ? "已還原 (6)" : "仍在跟進中"}
+有沒有受傷：${injury}${injury === "有" ? "（" + injuryDetail + "）" : ""}
+有沒有影響醫院整體運作：${operation}${operation === "有" ? "（" + operationDetail + "）" : ""}
+            `;
+            document.getElementById("report").textContent = report;
+        }
+    </script>
+</body>
+</html>
