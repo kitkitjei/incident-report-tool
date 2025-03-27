@@ -139,7 +139,7 @@
 
         const report = `
             <div class="report-section"><strong>事故: ${title}</strong></div>
-            <div class="report-section">日期：${date} 時間：${time} hrs</div>
+            <div class="report-section">日期：${date} 時間：約${time} hrs</div>
             <div class="report-section">受影響系統：${affectedSystems}</div>
             <div class="report-section">已知受影響範圍：${affectedAreas}</div>
             <div class="report-section">現時情況：${currentStatus}</div>
@@ -147,7 +147,7 @@
             <div class="report-section">有沒有影響醫院整體運作：${impactOnOperations}</div>
             <h3>事故更新</h3>
             <div class="report-section">${updates.replace(/\n/g, '<br>')}</div>
-            <div class="report-section">受影響時間：${impactTime} hrs</div>
+            <div class="report-section">受影響時間：${impactTime} hrs - </div>
             <div class="report-section">受影響運作系統：${affectedOperations}</div>
             <div class="report-section">受影響地方：${affectedPlaces}</div>
             <div class="report-section">通知醫院負責人：${contactPerson}</div>
