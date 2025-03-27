@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事故報告生成工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d9f7d9; /* 整個背景顏色為淡淡的綠色 */
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #report {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .report-section {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .report-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>事故報告生成工具</h1>
+    <form id="accidentForm">
+        <label for="title">事故標題：</label>
+        <input type="text" id="title" placeholder="請輸入事故標題">
+
+        <label for="date">日期：</label>
+        <input type="date" id="date">
+
+        <label for="time">時間（HH:MM）：</label>
+        <input type="time" id="time">
+
+        <label for="affectedSystems">受影響系統：</label>
+        <input type="text" id="affectedSystems" placeholder="請輸入受影響系統">
+
+        <label for="affectedAreas">已知受影響範圍：</label>
+        <input type="text" id="affectedAreas" placeholder="請輸入範圍">
+
+        <label for="currentStatus">現時情況：</label>
+        <select id="currentStatus">
+            <option value="">請選擇</option>
+            <option value="跟進中">跟進中</option>
+            <option value="維修中">維修中</option>
+            <option value="已還原">已還原</option>
+        </select>
+
+        <label for="injuries">有沒有受傷：</label>
+        <select id="injuries">
+            <option value="">請選擇</option>
+            <option value="有">有</option>
+            <option value="沒有">沒有</option>
+        </select>
+
+        <label for="impactOnOperations">有沒有影響醫院整體運作：</label>
+        <select id="impactOnOperations">
+            <option value="">請選擇</option>
+            <option value="有">有</option>
+            <option value="沒有">沒有</option>
+        </select>
+
+        <label for="mediaAttention">有沒有發現傳媒/公眾注意：</label>
+        <select id="mediaAttention">
+            <option value="">請選擇</option>
+            <option value="有">有</option>
+            <option value="沒有">沒有</option>
+        </select>
+
+        <label for="updates">事故內容：</label>
+        <textarea id="updates" rows="4" placeholder="請輸入事故內容"></textarea>
+
+        <label for="impactTime">受影響時間：</label>
+        <input type="time" id="impactTime">
+
+        <label for="affectedOperations">受影響運作系統：</label>
+        <input type="text" id="affectedOperations" placeholder="請輸入受影響運作系統">
+
+        <label for="affectedPlaces">受影響地方：</label>
+        <input type="text" id="affectedPlaces" placeholder="請輸入受影響地方">
+
+        <label for="contactPerson">通知醫院負責人：</label>
+        <input type="text" id="contactPerson" placeholder="請輸入醫院負責人姓名">
+
+        <label for="responsibleStaff">現場負責同事：</label>
+        <input type="text" id="responsibleStaff" placeholder="請輸入現場負責同事姓名">
+
+        <label for="contactNumbers">聯絡電話：</label>
+        <input type="text" id="contactNumbers" placeholder="請輸入同事聯絡電話">
+
+        <button type="submit">生成報告</button>
+    </form>
+
+    <div id="report"></div>
+</div>
+
+<script>
+    document.getElementById('accidentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const title = document.getElementById('title').value || '無標題';
+        const date = document.getElementById('date').value || '未提供';
+        const time = document.getElementById('time').value || '未提供';
+        const affectedSystems = document.getElementById('affectedSystems').value || '未提供';
+        const affectedAreas = document.getElementById('affectedAreas').value || '未提供';
+        const currentStatus = document.getElementById('currentStatus').value || '未提供';
+        const injuries = document.getElementById('injuries').value || '未提供';
+        const impactOnOperations = document.getElementById('impactOnOperations').value || '未提供';
+        const mediaAttention = document.getElementById('mediaAttention').value || '未提供';
+        const updates = document.getElementById('updates').value || '無更新';
+        const impactTime = document.getElementById('impactTime').value || '未提供';
+        const affectedOperations = document.getElementById('affectedOperations').value || '未提供';
+        const affectedPlaces = document.getElementById('affectedPlaces').value || '未提供';
+        const contactPerson = document.getElementById('contactPerson').value || '未提供';
+        const responsibleStaff = document.getElementById('responsibleStaff').value || '未提供';
+        const contactNumbers = document.getElementById('contactNumbers').value || '未提供';
+
+        const report = `
+            <div class="report-section report-title">事故: ${title}</div>
+            <div class="report-section">日期：${date} 時間：約${time} hrs</div>
+            <div class="report-section">受影響系統：${affectedSystems}</div>
+            <div class="report-section">已知受影響範圍：${affectedAreas}</div>
+            <div class="report-section">現時情況：${currentStatus}</div>
+            <div class="report-section">有沒有受傷：${injuries}</div>
+            <div class="report-section">有沒有影響醫院整體運作：${impactOnOperations}</div>
+            <div class="report-section">有沒有發現傳媒/公眾注意：${mediaAttention}</div>
+            <h3>事故更新</h3>
+            <div class="report-section">${updates.replace(/\n/g, '<br>')}</div>
+            <div class="report-section">受影響時間：${impactTime} hrs - </div>
+            <div class="report-section">受影響運作系統：${affectedOperations}</div>
+            <div class="report-section">受影響地方：${affectedPlaces}</div>
+            <div class="report-section">通知醫院負責人：${contactPerson}</div>
+            <div class="report-section">現場負責同事：${responsibleStaff}</div>
+            <div class="report-section">聯絡電話：${contactNumbers}</div>
+        `;
+
+        document.getElementById('report').innerHTML = report;
+    });
+</script>
+
+</body>
+</html>
